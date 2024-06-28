@@ -61,14 +61,14 @@ function Nearby() {
     }
   };
 
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-    if (!darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  };
+  // const toggleDarkMode = () => {
+  //   setDarkMode(!darkMode);
+  //   if (!darkMode) {
+  //     document.documentElement.classList.add('dark');
+  //   } else {
+  //     document.documentElement.classList.remove('dark');
+  //   }
+  // };
 
   const renderPlaces = (data, title, url) => (
     <div className="mt-8 sm:w-[400px] sm:h-[480px] card">
@@ -94,12 +94,12 @@ function Nearby() {
 
   return (
     <div className="min-h-screen bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col items-center p-4 back poppins-regular">
-      <button
+      {/* <button
         onClick={toggleDarkMode}
         className="absolute top-18 right-4 bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded-full"
       >
         {darkMode ? 'Light Mode' : 'Dark Mode'}
-      </button>
+      </button> */}
       <h1 className="text-3xl py-8 md:text-5xl font-bold text-center text-transparent bg-gradient-to-b from-gray-600 to-gray-900 dark:bg-gradient-to-b dark:from-gray-500 dark:to-white bg-clip-text">
         Find Nearby Places
       </h1>
