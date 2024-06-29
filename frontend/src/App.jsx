@@ -6,7 +6,7 @@ import Home from './components/Home';
 
 const App = () => {
   return (
-    <div className=' bg-blue-50 dark:bg-gray-900 back overflow-y-hidden'>
+    <div className=' bg-blue-50 dark:bg-gray-900 back overflow-hidden'>
       <Navbar/>
    
       <Outlet/>
