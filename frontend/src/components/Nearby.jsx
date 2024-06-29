@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import Loader from './Loader'; // Import the Loader component
 
 const containerStyle = {
   width: '100%',
@@ -27,11 +28,12 @@ function Nearby() {
     schools: null,
     parking: null,
   });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [darkMode, setDarkMode] = useState(false);
   const [mapCenter, setMapCenter] = useState(defaultCenter);
 
   const handleSearch = async () => {
+    setLoading(true); // Set loading to true before starting the search
     try {
       const response = await axios.post('http://localhost:3001/nearest-places', { placeName });
       setPlaces(response.data);
@@ -58,17 +60,10 @@ function Nearby() {
         parking: null,
       });
       setError('Error fetching nearby places. Please try again.');
+    } finally {
+      setLoading(false); // Set loading to false after the search is complete
     }
   };
-
-  // const toggleDarkMode = () => {
-  //   setDarkMode(!darkMode);
-  //   if (!darkMode) {
-  //     document.documentElement.classList.add('dark');
-  //   } else {
-  //     document.documentElement.classList.remove('dark');
-  //   }
-  // };
 
   const renderPlaces = (data, title, url) => (
     <div className="mt-8 sm:w-[400px] sm:h-[480px] card">
@@ -93,14 +88,10 @@ function Nearby() {
   );
 
   return (
-    <div className="min-h-screen bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col items-center p-4 back poppins-regular">
-      {/* <button
-        onClick={toggleDarkMode}
-        className="absolute top-18 right-4 bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100 p-2 rounded-full"
-      >
-        {darkMode ? 'Light Mode' : 'Dark Mode'}
-      </button> */}
-      <h1 className="text-3xl py-8 md:text-5xl font-bold text-center text-transparent bg-gradient-to-b from-gray-600 to-gray-900 dark:bg-gradient-to-b dark:from-gray-500 dark:to-white bg-clip-text">
+    <div className="min-h-screen  bg-blue-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex flex-col items-center p-4 back poppins-regular">
+      <div className='flex w-[80vw] shadow-xl dark:shadow-gray-800 shadow-gray-700 bg-gradient-to-r from-blue-200 to-slate-300 dark:bg-gradient-to-r dark:from-blue-950 dark:to-slate-950 justify-center items-center p-8 rounded-2xl box-cont'>
+        <div className='flex flex-col'>
+      <h1 className="text-4xl py-8 md:text-5xl font-bold text-center text-transparent bg-gradient-to-b from-gray-600 to-gray-900 dark:bg-gradient-to-b dark:from-gray-500 dark:to-white bg-clip-text">
         Find Nearby Places
       </h1>
       <div className="w-full">
@@ -114,35 +105,45 @@ function Nearby() {
           />
           <button
             onClick={handleSearch}
-            className="w-full bg-gradient-to-t from-blue-900 to to-blue-800 text-white p-3 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
+            className="w-full bg-gradient-to-t from-blue-900 to to-blue-700 text-white p-3 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring focus:border-blue-300"
           >
             Search
           </button>
         </div>
-        {error && <p className="mt-4 text-center text-red-500">{error}</p>}
-        <div className="mt-8 w-1/2 mx-auto">
-        {isLoaded && (
-            <div className="relative">
-              <div className="aspect-w-1 aspect-h-1 sm:aspect-w-16 sm:aspect-h-9">
-                <GoogleMap
-                  mapContainerClassName="absolute inset-0"
-                  center={mapCenter}
-                  zoom={12}
-                >
-                  <Marker position={mapCenter} />
-                </GoogleMap>
+        </div>
+        </div>
+        {error && alert(error)}
+        {loading ? (
+          <div className="mt-8 w-1/2 mx-auto">
+            <Loader />
+          </div>
+        ) : (
+          <div className="mt-8 w-full sm:w-1/2 mx-auto">
+            {isLoaded && (
+              <div className="relative map-container">
+                <div className="aspect-w-16 aspect-h-9 sm:aspect-w-16 sm:aspect-h-9">
+                  <GoogleMap
+                    mapContainerClassName="absolute inset-0"
+                    center={mapCenter}
+                    zoom={12}
+                  >
+                    <Marker position={mapCenter} />
+                  </GoogleMap>
+                </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
+          
+        )}
+        
         </div>
         <div className="flex flex-wrap justify-center items-center gap-6 mt-8 mb-2">
-          {renderPlaces(places.supermarkets, 'Nearest Supermarkets','https://cdn.britannica.com/86/124786-004-1F7D6700/Supermarket-Jamnagar-Gujarat-India.jpg')}
+          {renderPlaces(places.supermarkets, 'Nearest Supermarkets', 'https://cdn.britannica.com/86/124786-004-1F7D6700/Supermarket-Jamnagar-Gujarat-India.jpg')}
           {renderPlaces(places.hospitals, 'Nearest Hospitals', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRt-YdgCgQY4oiyHme5sBtc-U31O2iXRnSuKA&s')}
-          {renderPlaces(places.restaurants, 'Nearest Restaurants','https://assets.architecturaldigest.in/photos/61bf5698964e7236ae515700/1:1/w_4480,h_4480,c_limit/(1).jpg')}
-          {renderPlaces(places.schools, 'Nearest Schools','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPOtAmKGfzCffrQ8MCOpw5z-kxhoD332KrwQ&s')}
-          {renderPlaces(places.parking, 'Nearest Parking','https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwBNZ-0Er67v7E09N8WUcYcpQ8URJugp9SmQ&s')}
+          {renderPlaces(places.restaurants, 'Nearest Restaurants', 'https://assets.architecturaldigest.in/photos/61bf5698964e7236ae515700/1:1/w_4480,h_4480,c_limit/(1).jpg')}
+          {renderPlaces(places.schools, 'Nearest Schools', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPOtAmKGfzCffrQ8MCOpw5z-kxhoD332KrwQ&s')}
+          {renderPlaces(places.parking, 'Nearest Parking', 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwBNZ-0Er67v7E09N8WUcYcpQ8URJugp9SmQ&s')}
         </div>
-      </div>
     </div>
   );
 }

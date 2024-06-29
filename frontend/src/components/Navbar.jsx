@@ -7,24 +7,33 @@ function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
 
+ // Load the dark mode preference from local storage on component mount
+ useEffect(() => {
+  const savedMode = localStorage.getItem('darkMode') === 'true';
+  setIsChecked(savedMode);
+  document.documentElement.classList.toggle('dark', savedMode);
+}, []);
+
+// Save the dark mode preference to local storage whenever it changes
+useEffect(() => {
+  localStorage.setItem('darkMode', isChecked);
+  if (isChecked) {
+    document.documentElement.classList.add('dark');
+  } else {
+    document.documentElement.classList.remove('dark');
+  }
+}, [isChecked]);
+
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
-  useEffect(() => {
-    if (isChecked) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [isChecked]);
 
   const handleToggle = () => {
     setIsChecked(!isChecked);
   };
 
   return (
-    <nav className="bg-transparent text-white p-4">
+    <nav className="bg-transparent  text-black dark:text-white p-4">
       <div className="container mx-auto flex justify-end items-center">
         <div className="text-2xl font-bold mr-auto hidden md:block">MyApp</div>
         <div className="md:hidden mr-auto" onClick={toggleMenu}>
@@ -34,7 +43,7 @@ function Navbar() {
           <li className="md:ml-6 my-2 md:my-0">
             {isOpen ? (
               <Link to="/" className="hover:text-gray-400">
-                <FaHome size={24} className='mx-4'  />
+                <FaHome size={24} className='mx-4' />
               </Link>
             ) : (
               <Link to="/" className="hover:text-gray-400">Home</Link>
@@ -43,7 +52,7 @@ function Navbar() {
           <li className="md:ml-6 my-2 md:my-0">
             {isOpen ? (
               <Link to="/find" className="hover:text-gray-400">
-                <FaSearch size={24} className='mx-4'   />
+                <FaSearch size={24} className='mx-4' />
               </Link>
             ) : (
               <Link to="/find" className="hover:text-gray-400">Find</Link>
@@ -52,7 +61,7 @@ function Navbar() {
           <li className="md:ml-6 my-2 md:my-0">
             {isOpen ? (
               <Link to="/ai" className="hover:text-gray-400">
-                <FaRobot size={24} className='mx-4'   />
+                <FaRobot size={24} className='mx-4' />
               </Link>
             ) : (
               <Link to="/ai" className="hover:text-gray-400">AI</Link>
@@ -61,7 +70,7 @@ function Navbar() {
           <li className="md:ml-6 my-2 md:my-0">
             {isOpen ? (
               <Link to="/community" className="hover:text-gray-400">
-                <FaUsers size={24} className='mx-4'   />
+                <FaUsers size={24} className='mx-4' />
               </Link>
             ) : (
               <Link to="/community" className="hover:text-gray-400">Community</Link>
@@ -93,14 +102,14 @@ function Navbar() {
             onChange={handleToggle}
           />
           <span className={`absolute top-1/2 left-1 transform -translate-y-1/2 transition-all duration-300 ${isChecked ? "translate-x-12" : ""}`}>
-            <span className="block w-6 h-6 ml-[-1px] bg-gray-200 rounded-full slider-dot"></span>
+            <span className="block w-6 h-6 ml-[-1px] bg-gray-500 rounded-full slider-dot"></span>
           </span>
         </button>
       </div>
       
       <button
         id="myBtn"
-        className={`fixed bottom-[75px] left-[25px] z-99 w-[45px] h-[40px] p-[px] rounded-full bg-blue-800 shadow-md transition-transform scale-125 m-2 ${isChecked ? "filter-invert-0" : "filter-invert"}`}
+        className={`fixed bottom-[75px] right-[25px] z-99 w-[40px] h-[40px]  rounded-full bg-blue-800 shadow-md transition-transform scale-125 m-2 ${isChecked ? "filter-invert-0" : "filter-invert"}`}
         onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       >
         ↑
