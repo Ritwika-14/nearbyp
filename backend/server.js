@@ -4,7 +4,7 @@ import cors from 'cors';
 import { config } from 'dotenv';
 import mongoose from 'mongoose';
 import { GoogleGenerativeAI } from '@google/generative-ai';
-
+import https from 'https';
 config();
 const app = express();
 const port = 3001;
@@ -114,6 +114,46 @@ app.get('/tweets', async (req, res) => {
     } catch (error) {
         console.error('Error fetching tweets:', error);
         res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+//Route for getting location
+app.post('/getgeolocation', async (req, res) => {
+    try {
+        const { lat, long } = req.body.latlong;
+        console.log(lat, long);
+
+        const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${long}&key=74c89b3be64946ac96d777d08b878d43`;
+
+        https.get(url, (resp) => {
+            let data = '';
+
+            // A chunk of data has been received.
+            resp.on('data', (chunk) => {
+                data += chunk;
+            });
+
+            // The whole response has been received.
+            resp.on('end', () => {
+                const result = JSON.parse(data);
+                
+
+                const response = result.results[0].components;
+                
+                const { village, county, state_district, state, postcode } = response;
+                const location = `${state_district},${state}\n${postcode}`;
+                const tunedlocation= location.substring(10,location.length);
+
+                res.send({ location });
+            });
+
+        }).on("error", (err) => {
+            console.error("Error: " + err.message);
+            res.send("Server Error");
+        });
+
+    } catch (error) {
+        console.error(error.message);
+        res.send("Server Error");
     }
 });
 

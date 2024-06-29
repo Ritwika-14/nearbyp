@@ -35,7 +35,7 @@ useEffect(() => {
   return (
     <nav className="bg-transparent  text-black dark:text-white p-4">
       <div className="container mx-auto flex justify-end items-center">
-        <div className="text-2xl font-bold mr-auto hidden md:block">MyApp</div>
+        <div className="text-2xl font-bold text-gray-900 dark:text-gray-200 mr-auto hidden md:block">Navigo</div>
         <div className="md:hidden mr-auto" onClick={toggleMenu}>
           {isOpen ? <FaTimes size={28} /> : <FaBars size={28} />}
         </div>
@@ -79,7 +79,7 @@ useEffect(() => {
         </ul>
         <button
           onClick={handleToggle}
-          className="relative flex items-center justify-between w-20 h-10 bg-gray-300 dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-full p-1 animate__animated animate__slow animate__delay-2s"
+          className="relative flex items-center justify-between w-20 h-10 bg-gray-300 shadow-gray-900 shadow-lg  dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-full p-1 animate__animated animate__slow animate__delay-2s"
         >
           <span className={`absolute left-2 ${isChecked ? "opacity-100" : "opacity-100"} transition-opacity duration-300 sun`}>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-6 h-6 animate-rotate">
@@ -90,7 +90,7 @@ useEffect(() => {
             </svg>
           </span>
           <span className={`absolute right-2 ${isChecked ? "opacity-100" : "opacity-100"} transition-opacity duration-300 moon`}>
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" className="w-6 h-6">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" fill='#ffd43b' className="w-6 h-6">
               <path d="M223.5 32C100 32 0 132.3 0 256s100 224 223.5 224c60.6 0 115.5-24.2 155.8-63.4 5-4.9 6.3-12.5 3.1-18.7s-10.1-9.7-17-8.5c-9.8 1.7-19.8 2.6-30.1 2.6-96.9 0-175.5-78.8-175.5-176 0-65.8 36-123.1 89.3-153.3 6.1-3.5 9.2-10.5 7.7-17.3s-7.3-11.9-14.3-12.5c-6.3-.5-12.6-.8-19-.8z"></path>
             </svg>
           </span>
@@ -102,7 +102,7 @@ useEffect(() => {
             onChange={handleToggle}
           />
           <span className={`absolute top-1/2 left-1 transform -translate-y-1/2 transition-all duration-300 ${isChecked ? "translate-x-12" : ""}`}>
-            <span className="block w-6 h-6 ml-[-1px] bg-gray-500 rounded-full slider-dot"></span>
+            <span className="block w-7 h-7 ml-[-2px] bg-gray-500 rounded-full slider-dot"></span>
           </span>
         </button>
       </div>
